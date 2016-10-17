@@ -5,12 +5,14 @@ output:
     keep_md: true
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 Loading and Processing the Data
 ================================
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE)
 
 library(ggplot2)
 
@@ -31,14 +33,21 @@ What is mean total number of steps taken per day?
 ====================================================
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE)
 
 ##sorting "activity_data"
 total_steps <- tapply(activity_data$steps, activity_data$date, FUN = sum, na.rm = TRUE)
 
+```
+
+```{r , results='asis', fig.height=10, fig.height=5}
+
 ##Histogram PLOT (total steps)
 qplot(total_steps, binwidth = 750, xlab = "NUMBER of STEPS", 
                                    ylab = "FREQUENCY") + ggtitle("NUMBER OF STEPS TAKEN EACH DAY (OCT-NOV 2012)")
+
+```
+
+```{r}
 
 ##Mean and Median (total steps)
 mean(total_steps, na.rm = TRUE)
@@ -52,18 +61,24 @@ What is the average daily activity pattern?
 ============================================
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE)
 
 #Average Daily Activity Pattern
 avg_activity_pattern <- aggregate(x = list(steps = activity_data$steps), 
                                  by = list(interval = activity_data$interval),
                                 FUN = mean, na.rm = TRUE)
-      
+```
+
+```{r , results='asis', fig.height=10, fig.height=5} 
+
 ##Line Plot (avg activity)
 ggplot(data = avg_activity_pattern, 
       aes(x = interval, y = steps)) + geom_line() + 
                                       xlab("5 MINUTE INTERVAL") + 
                                       ylab("NUMBER OF STEPS") + ggtitle("AVERAGE DAILY ACTIVE PATTERN")
+
+```
+
+```{r}
 
 ##maximum number of steps (5 minute interval)
 avg_activity_pattern[which.max(avg_activity_pattern$steps),]
@@ -93,10 +108,17 @@ mean_data_final <- activity_data
 mean_data_final$steps <- mapply(mean_fill_value, mean_data_final$steps, mean_data_final$interval)
 total_steps_2 <- tapply(mean_data_final$steps, mean_data_final$date, FUN = sum)
 
+```
+
+```{r , results='asis', fig.height=10, fig.height=5}
+
 ##Histogram PLOT2 (with missing values)
 qplot(total_steps_2, binwidth = 750, xlab = "NUMBER of STEPS", 
                                      ylab = "FREQUENCY") + ggtitle("NUMBER OF STEPS TAKEN EACH DAY (OCT-NOV 2012)")
 
+```
+
+```{r}
 
 ##Mean and Median (total steps)
 mean(total_steps_2, na.rm = TRUE)
@@ -123,6 +145,10 @@ weekday_vs_weekend <- function(date) {
 mean_data_final$date <- as.Date(mean_data_final$date)
 mean_data_final$day <- sapply(mean_data_final$date, FUN=weekday_vs_weekend)
 avg_weekday_vs_weekend <- aggregate(steps ~ interval + day, data = mean_data_final, mean)
+
+```
+
+```{r , results='asis', fig.height=10, fig.height=5}
 
 ##Line Plot2 (weekday vs weekend)
 ggplot(data = avg_weekday_vs_weekend, 
