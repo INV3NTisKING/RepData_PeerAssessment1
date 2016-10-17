@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Loading and Processing the Data
 ================================
 
-```{r}
+```{r, echo=TRUE}
 
 library(ggplot2)
 
@@ -32,14 +32,14 @@ activity_data <- read.csv("activity.csv")
 What is mean total number of steps taken per day?
 ====================================================
 
-```{r}
+```{r, echo=TRUE}
 
 ##sorting "activity_data"
 total_steps <- tapply(activity_data$steps, activity_data$date, FUN = sum, na.rm = TRUE)
 
 ```
 
-```{r , results='asis', fig.height=10, fig.height=5}
+```{r, echo=TRUE}
 
 ##Histogram PLOT (total steps)
 qplot(total_steps, binwidth = 750, xlab = "NUMBER of STEPS", 
@@ -47,7 +47,7 @@ qplot(total_steps, binwidth = 750, xlab = "NUMBER of STEPS",
 
 ```
 
-```{r}
+```{r, echo=TRUE}
 
 ##Mean and Median (total steps)
 mean(total_steps, na.rm = TRUE)
@@ -60,7 +60,7 @@ median(total_steps, na.rm = TRUE)
 What is the average daily activity pattern?
 ============================================
 
-```{r}
+```{r, echo=TRUE}
 
 #Average Daily Activity Pattern
 avg_activity_pattern <- aggregate(x = list(steps = activity_data$steps), 
@@ -68,7 +68,7 @@ avg_activity_pattern <- aggregate(x = list(steps = activity_data$steps),
                                 FUN = mean, na.rm = TRUE)
 ```
 
-```{r , results='asis', fig.height=10, fig.height=5} 
+```{r, echo=TRUE}
 
 ##Line Plot (avg activity)
 ggplot(data = avg_activity_pattern, 
@@ -78,7 +78,7 @@ ggplot(data = avg_activity_pattern,
 
 ```
 
-```{r}
+```{r, echo=TRUE}
 
 ##maximum number of steps (5 minute interval)
 avg_activity_pattern[which.max(avg_activity_pattern$steps),]
@@ -88,7 +88,7 @@ avg_activity_pattern[which.max(avg_activity_pattern$steps),]
 Imputing missing values
 ========================
 
-```{r}
+```{r, echo=TRUE}
 
 #IMPUTING MISSING VALUES
 missing_values <- is.na(activity_data$steps)
@@ -110,7 +110,7 @@ total_steps_2 <- tapply(mean_data_final$steps, mean_data_final$date, FUN = sum)
 
 ```
 
-```{r , results='asis', fig.height=10, fig.height=5}
+```{r, echo=TRUE}
 
 ##Histogram PLOT2 (with missing values)
 qplot(total_steps_2, binwidth = 750, xlab = "NUMBER of STEPS", 
@@ -118,7 +118,7 @@ qplot(total_steps_2, binwidth = 750, xlab = "NUMBER of STEPS",
 
 ```
 
-```{r}
+```{r, echo=TRUE}
 
 ##Mean and Median (total steps)
 mean(total_steps_2, na.rm = TRUE)
@@ -130,7 +130,7 @@ median(total_steps_2, na.rm = TRUE)
 Are there differences in activity patterns between weekdays and weekends?
 ==========================================================================
 
-```{r}
+```{r, echo=TRUE}
 
 #Activity Pattern Differences (Weekday vs Weekend)
 weekday_vs_weekend <- function(date) {
@@ -148,7 +148,7 @@ avg_weekday_vs_weekend <- aggregate(steps ~ interval + day, data = mean_data_fin
 
 ```
 
-```{r , results='asis', fig.height=10, fig.height=5}
+```{r, echo=TRUE}
 
 ##Line Plot2 (weekday vs weekend)
 ggplot(data = avg_weekday_vs_weekend, 
