@@ -1,13 +1,12 @@
 # Reproducible Research: Peer Assessment 1
 
 
+
 Loading and Processing the Data
 ================================
 
 
 ```r
-knitr::opts_chunk$set(echo = TRUE)
-
 library(ggplot2)
 ```
 
@@ -33,17 +32,19 @@ What is mean total number of steps taken per day?
 
 
 ```r
-knitr::opts_chunk$set(echo = TRUE)
-
 ##sorting "activity_data"
 total_steps <- tapply(activity_data$steps, activity_data$date, FUN = sum, na.rm = TRUE)
+```
 
+
+```r
 ##Histogram PLOT (total steps)
 qplot(total_steps, binwidth = 750, xlab = "NUMBER of STEPS", 
                                    ylab = "FREQUENCY") + ggtitle("NUMBER OF STEPS TAKEN EACH DAY (OCT-NOV 2012)")
 ```
 
-![](PA1_Template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![](PA1_Template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 
 ```r
 ##Mean and Median (total steps)
@@ -67,13 +68,14 @@ What is the average daily activity pattern?
 
 
 ```r
-knitr::opts_chunk$set(echo = TRUE)
-
 #Average Daily Activity Pattern
 avg_activity_pattern <- aggregate(x = list(steps = activity_data$steps), 
                                  by = list(interval = activity_data$interval),
                                 FUN = mean, na.rm = TRUE)
-      
+```
+
+
+```r
 ##Line Plot (avg activity)
 ggplot(data = avg_activity_pattern, 
       aes(x = interval, y = steps)) + geom_line() + 
@@ -81,7 +83,8 @@ ggplot(data = avg_activity_pattern,
                                       ylab("NUMBER OF STEPS") + ggtitle("AVERAGE DAILY ACTIVE PATTERN")
 ```
 
-![](PA1_Template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_Template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
 
 ```r
 ##maximum number of steps (5 minute interval)
@@ -123,13 +126,17 @@ mean_fill_value <- function(steps, interval) {
 mean_data_final <- activity_data
 mean_data_final$steps <- mapply(mean_fill_value, mean_data_final$steps, mean_data_final$interval)
 total_steps_2 <- tapply(mean_data_final$steps, mean_data_final$date, FUN = sum)
+```
 
+
+```r
 ##Histogram PLOT2 (with missing values)
 qplot(total_steps_2, binwidth = 750, xlab = "NUMBER of STEPS", 
                                      ylab = "FREQUENCY") + ggtitle("NUMBER OF STEPS TAKEN EACH DAY (OCT-NOV 2012)")
 ```
 
-![](PA1_Template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](PA1_Template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
 
 ```r
 ##Mean and Median (total steps)
@@ -166,7 +173,10 @@ weekday_vs_weekend <- function(date) {
 mean_data_final$date <- as.Date(mean_data_final$date)
 mean_data_final$day <- sapply(mean_data_final$date, FUN=weekday_vs_weekend)
 avg_weekday_vs_weekend <- aggregate(steps ~ interval + day, data = mean_data_final, mean)
+```
 
+
+```r
 ##Line Plot2 (weekday vs weekend)
 ggplot(data = avg_weekday_vs_weekend, 
        aes(x = interval, y = steps)) + geom_line() + 
@@ -175,4 +185,4 @@ ggplot(data = avg_weekday_vs_weekend,
                                ylab("NUMBER OF STEPS") + ggtitle("WEEKDAY vs WEEKEND (average number of steps)")
 ```
 
-![](PA1_Template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](PA1_Template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
